@@ -6,9 +6,7 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"strings"
 )
-
 
 func SaveImage(path string, url string) error {
 	resp, err := http.Get(url)
@@ -59,16 +57,16 @@ func ExtractImageName(imageUrl string) (string, error) {
 	return imageName, nil
 }
 
-func DownloadImage(URL, src, PATH string) error {
+func DownloadImage(src, PATH string) error {
 	var err error
 	imageUrl := src
 
-	if strings.HasPrefix(imageUrl, "/") {
-		imageUrl, err = ConvertRelativePath(URL, src)
-		if err != nil {
-			return err
-		}
-	}
+	// if strings.HasPrefix(imageUrl, "/") {
+	// 	imageUrl, err = ConvertRelativePath(URL, src)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
 
 	imagePath, err := ExtractImageName(imageUrl)
 	if err != nil {
