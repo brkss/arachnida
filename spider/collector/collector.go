@@ -25,7 +25,7 @@ func NewSpiderCollector(recursive bool, depth int, path string) *colly.Collector
 		if err != nil {
 			fmt.Println("Error!: cannot Download Image !");
 		}else {
-			fmt.Println(">> Image Downloaded successfuly !")
+			fmt.Println(">> Image Downloaded successfuly !", src)
 		}
 	})
 
