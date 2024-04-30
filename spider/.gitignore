@@ -1,5 +1,7 @@
+# binary
+./spider
 
-
+# images 
 images/*
 *.png
 *.jpg
