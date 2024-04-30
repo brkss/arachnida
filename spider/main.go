@@ -35,7 +35,7 @@ func main() {
 	// Find and visit all links
 	c.OnHTML("img", func(e *colly.HTMLElement) {
 		src := e.Attr("src")
-		err := download.DownloadImage(URL, src)
+		err := download.DownloadImage(URL, src, *savePath)
 		if err != nil {
 			fmt.Printf("Error : %v \n\n\n\n", err)
 		} else {

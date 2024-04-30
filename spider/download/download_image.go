@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-const PATH = "./images"
 
 func SaveImage(path string, url string) error {
 	resp, err := http.Get(url)
@@ -60,7 +59,7 @@ func ExtractImageName(imageUrl string) (string, error) {
 	return imageName, nil
 }
 
-func DownloadImage(URL, src string) error {
+func DownloadImage(URL, src, PATH string) error {
 	var err error
 	imageUrl := src
 
