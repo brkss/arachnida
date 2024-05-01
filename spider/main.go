@@ -29,55 +29,53 @@ func main() {
 
 	fmt.Println("--------------------")
 
-	pageContent, err := scrap.ScrapPage(URL)
-	if err != nil {
-		log.Fatal("something went wrng : ", err)
-	}
+	visited := make(map[string]bool)
+	links := []string{URL} // Starting URL
 
-	err = scrap.ScrapImages(URL, *savePath, pageContent)
-	if err != nil {
-		log.Fatal("Cannot scrap images !")
-	}
+	currentDepth := 0
+	for currentDepth < *maxDepth {
+		if !*recursive && currentDepth > 0 {
+			break
+		}
 
-	/*
-		srcs, err := scrap.ExtractImageLinks(pageContent, URL)
+		// New batch of links to process in the next depth level
+		newLinks := []string{}
 
-	*/
+		for _, link := range links {
+			if visited[link] {
+				continue
+			}
+			visited[link] = true
 
-	// links, err := scrap.ExtractLinkURLs(pageContent, URL)
-	// if err != nil {
-	// 	log.Fatal("something went wrong extracting image links")
-	// }
+			// Fetch page content
+			pageContent, err := scrap.ScrapPage(link)
+			if err != nil {
+				continue
+			}
 
-	// for _, link := range links {
-	// 	fmt.Println("link : ", link)
-	// }
+			// Scrap images from the page
+			err = scrap.ScrapImages(link, *savePath, pageContent)
+			if err != nil {
+				continue
+			}
 
-	/*
-		c := collector.NewSpiderCollector(*recursive, *maxDepth, *savePath)
-		c.Visit(URL)
-
-		/*
-			// Find and visit all links
-			c.OnHTML("img", func(e *colly.HTMLElement) {
-				src := e.Attr("src")
-				err := download.DownloadImage(URL, src, *savePath)
+			// Extract new links only if within depth limit
+			if currentDepth+1 < *maxDepth {
+				extractedLinks, err := scrap.ExtractLinkURLs(pageContent, link)
 				if err != nil {
-					fmt.Printf("Error : %v \n\n\n\n", err)
-				} else {
-					fmt.Println("Image downloaded successfuly !")
+					continue
 				}
-			})
 
-			c.OnHTML("a", func(e *colly.HTMLElement) {
-				link := e.Attr("href")
-				fmt.Println("link : ", link)
-			})
+				for _, newLink := range extractedLinks {
+					if !visited[newLink] {
+						newLinks = append(newLinks, newLink)
+					}
+				}
+			}
+		}
 
-			c.OnRequest(func(r *colly.Request) {
-				fmt.Println("Visiting", r.URL)
-			})
-
-	*/
+		links = newLinks
+		currentDepth++
+	}
 
 }

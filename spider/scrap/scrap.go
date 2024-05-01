@@ -104,7 +104,7 @@ func ScrapImages(url, path, body string) error {
 			continue
 		}
 
-		fmt.Println(">>> Image Dowloaded successfuly!")
+		fmt.Println(">>> Image Dowloaded successfuly!", src)
 	}
 
 	return nil
