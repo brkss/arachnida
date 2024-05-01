@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 
 	"github.com/brkss/cybersecurity-pool/spider/scrap"
@@ -22,13 +21,6 @@ func main() {
 
 	URL := args[0]
 
-	fmt.Println("-r : ", *recursive)
-	fmt.Println("-l : ", *maxDepth)
-	fmt.Println("-p : ", *savePath)
-	fmt.Println("URL : ", URL)
-
-	fmt.Println("--------------------")
-
 	visited := make(map[string]bool)
 	links := []string{URL} // Starting URL
 
@@ -38,7 +30,6 @@ func main() {
 			break
 		}
 
-		// New batch of links to process in the next depth level
 		newLinks := []string{}
 
 		for _, link := range links {
@@ -47,19 +38,16 @@ func main() {
 			}
 			visited[link] = true
 
-			// Fetch page content
 			pageContent, err := scrap.ScrapPage(link)
 			if err != nil {
 				continue
 			}
 
-			// Scrap images from the page
 			err = scrap.ScrapImages(link, *savePath, pageContent)
 			if err != nil {
 				continue
 			}
 
-			// Extract new links only if within depth limit
 			if currentDepth+1 < *maxDepth {
 				extractedLinks, err := scrap.ExtractLinkURLs(pageContent, link)
 				if err != nil {
@@ -77,5 +65,4 @@ func main() {
 		links = newLinks
 		currentDepth++
 	}
-
 }

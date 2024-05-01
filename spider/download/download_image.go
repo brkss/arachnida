@@ -46,13 +46,6 @@ func DownloadImage(src, PATH string) error {
 	var err error
 	imageUrl := src
 
-	// if strings.HasPrefix(imageUrl, "/") {
-	// 	imageUrl, err = ConvertRelativePath(URL, src)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// }
-
 	imagePath, err := ExtractImageName(imageUrl)
 	if err != nil {
 		return err
