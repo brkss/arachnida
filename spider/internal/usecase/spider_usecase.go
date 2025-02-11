@@ -1,5 +1,14 @@
 package usecase
 
+import (
+	"errors"
+	"fmt"
+	"path/filepath"
+	"strings"
+
+	"github.com/brkss/arachnida/spider/internal/domain"
+)
+
 
 
 type SpiderUsecase struct {
