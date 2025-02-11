@@ -68,3 +68,15 @@ func (u *SpiderUsecase) DownloadImages(url string, maxDepth int, currentDepth in
 
 }
 
+
+func ValidateDepth(depth int) (int, error){
+	if depth < 0 {
+		return 0, errors.New("depth must be greater than 0")
+	}
+
+	if depth == 0 {
+		return 5, nil; // set a default depth of 5 if no depth is provided
+	}
+
+	return depth, nil;
+}
